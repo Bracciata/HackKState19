@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -25,6 +26,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.document.FirebaseVisionCloudDocumentRecognizerOptions;
@@ -38,7 +40,7 @@ import java.util.List;
 import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private Camera mCamera;
@@ -52,13 +54,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_full:
+                // Open Full text read from image.
+                openFull();
+                break;
+            case R.id.navigation_summary:
+                openSummary();
+                break;
+        }
+        return true;
+    }
+
+    private void openFull() {
+        BottomNavigationView btv = findViewById(R.id.navigation);
+        btv.setSelectedItemId(R.id.full_text);
+    }
+
+    private void openSummary() {
+        BottomNavigationView btv = findViewById(R.id.navigation);
+        btv.setSelectedItemId(R.id.summary_text);
+    }
+
+    @Override
     protected void onDestroy() {
         if (mCamera != null) {
             mCamera.release();
         }
         super.onDestroy();
     }
-    void checkPermissions(){
+
+    void checkPermissions() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
@@ -87,27 +114,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // https://developer.android.com/guide/topics/media/camera
-    /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(){
+
+    /**
+     * A safe way to get an instance of the Camera object.
+     */
+    public static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
-            Log.e(TAG, "HereTommy" );
-        }
-        catch (Exception e){
+            Log.e(TAG, "HereTommy");
+        } catch (Exception e) {
             // Camera is not available (in use or does not exist)
-            Log.e(TAG, e+"HERE TOMMTY" );
+            Log.e(TAG, e + "HERE TOMMTY");
 
         }
         return c; // returns null if camera is unavailable
     }
+
     private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-            if (bmp == null){
+            if (bmp == null) {
                 Log.d(TAG, "Error creating media file, check storage permissions");
                 return;
             }
@@ -115,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    void openConfirmationScreen(Bitmap bmp){
+    void openConfirmationScreen(Bitmap bmp) {
         setContentView(R.layout.activity_confirmation);
         ImageView image = findViewById(R.id.imageview_confirm);
         Matrix matrix = new Matrix();
@@ -143,14 +173,20 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
+
     void openOutput() {
-setContentView(R.layout.activity_output);
+        setContentView(R.layout.activity_output);
+        BottomNavigationView btv = findViewById(R.id.navigation);
+        btv.setOnNavigationItemSelectedListener(MainActivity.this);
+        openSummary();
+
     }
-    void loadCamera(){
+
+    void loadCamera() {
         setContentView(R.layout.activity_main);
-        try{
+        try {
             mCamera.release();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         // Create an instance of Camera
@@ -172,10 +208,11 @@ setContentView(R.layout.activity_output);
                 }
         );
     }
+
     // After selecting image call the following method.
-    void processImage(Bitmap image){
+    void processImage(Bitmap image) {
         FirebaseVisionDocumentTextRecognizer detector = getCloudDocumentRecognizer();
-        VisionImage vImg =  new VisionImage();
+        VisionImage vImg = new VisionImage();
         FirebaseVisionImage myImage = vImg.imageFromBitmap(image);
         detector.processImage(myImage)
                 .addOnSuccessListener(new OnSuccessListener<FirebaseVisionDocumentText>() {
@@ -196,27 +233,27 @@ setContentView(R.layout.activity_output);
     }
 
     // Code from: https://firebase.google.com/docs/ml-kit/android/recognize-text
-    String pullText(FirebaseVisionDocumentText result){
+    String pullText(FirebaseVisionDocumentText result) {
         String resultText = result.getText();
         // The following can be used for logging confidence.
         Float minConfidenceOfBlock = 1.0f;
-        for (FirebaseVisionDocumentText.Block block: result.getBlocks()) {
+        for (FirebaseVisionDocumentText.Block block : result.getBlocks()) {
             String blockText = block.getText();
             Float blockConfidence = block.getConfidence();
-            minConfidenceOfBlock = Math.min(blockConfidence,minConfidenceOfBlock);
+            minConfidenceOfBlock = Math.min(blockConfidence, minConfidenceOfBlock);
             List<RecognizedLanguage> blockRecognizedLanguages = block.getRecognizedLanguages();
             Rect blockFrame = block.getBoundingBox();
-            for (FirebaseVisionDocumentText.Paragraph paragraph: block.getParagraphs()) {
+            for (FirebaseVisionDocumentText.Paragraph paragraph : block.getParagraphs()) {
                 String paragraphText = paragraph.getText();
                 Float paragraphConfidence = paragraph.getConfidence();
                 List<RecognizedLanguage> paragraphRecognizedLanguages = paragraph.getRecognizedLanguages();
                 Rect paragraphFrame = paragraph.getBoundingBox();
-                for (FirebaseVisionDocumentText.Word word: paragraph.getWords()) {
+                for (FirebaseVisionDocumentText.Word word : paragraph.getWords()) {
                     String wordText = word.getText();
                     Float wordConfidence = word.getConfidence();
                     List<RecognizedLanguage> wordRecognizedLanguages = word.getRecognizedLanguages();
                     Rect wordFrame = word.getBoundingBox();
-                    for (FirebaseVisionDocumentText.Symbol symbol: word.getSymbols()) {
+                    for (FirebaseVisionDocumentText.Symbol symbol : word.getSymbols()) {
                         String symbolText = symbol.getText();
                         Float symbolConfidence = symbol.getConfidence();
                         List<RecognizedLanguage> symbolRecognizedLanguages = symbol.getRecognizedLanguages();
