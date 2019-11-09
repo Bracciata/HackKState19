@@ -182,6 +182,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     void openOutput(Bitmap bmp) {
+        // Process image
+        processImage(bmp);
+
         setContentView(R.layout.activity_output);
         BottomNavigationView btv = findViewById(R.id.navigation);
         btv.setOnNavigationItemSelectedListener(MainActivity.this);
@@ -226,8 +229,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     @Override
                     public void onSuccess(FirebaseVisionDocumentText result) {
                         // Task completed successfully
-                        String text = pullText(result);
+                        fullText = pullText(result);
                         //Send the above to Danny's summary code.
+                        // summary = Danny's code
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
