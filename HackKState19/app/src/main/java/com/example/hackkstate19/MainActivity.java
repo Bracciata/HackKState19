@@ -70,16 +70,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void openFull() {
-        BottomNavigationView btv = findViewById(R.id.navigation);
-        btv.setSelectedItemId(R.id.navigation_full);
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(fullText);
     }
     String summary  = "";
     String fullText="";
     private void openSummary() {
-        BottomNavigationView btv = findViewById(R.id.navigation);
-        btv.setSelectedItemId(R.id.navigation_summary);
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(summary);
 
@@ -184,12 +180,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     void openOutput(Bitmap bmp) {
         // Process image
-        // processImage(bmp);
+         processImage(bmp);
 
         setContentView(R.layout.activity_output);
-        //BottomNavigationView btv = findViewById(R.id.navigation);
-        //btv.setOnNavigationItemSelectedListener(MainActivity.this);
-        //openSummary();
+        BottomNavigationView btv = findViewById(R.id.navigation);
+        btv.setOnNavigationItemSelectedListener(MainActivity.this);
+        openSummary();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
