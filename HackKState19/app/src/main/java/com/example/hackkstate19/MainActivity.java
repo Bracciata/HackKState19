@@ -59,11 +59,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         try{
-        if(this.findViewById(android.R.id.content).getRootView()==findViewById(R.id.rl_root_one).getRootView()) {
-            System.out.println("TEARSTOMMY");
-            this.menu=menu;
-            getMenuInflater().inflate(R.menu.main_menu, menu);
-        }} catch(Exception e){}
+            if(this.findViewById(android.R.id.content).getRootView()==findViewById(R.id.rl_root_one).getRootView()) {
+                this.menu=menu;
+                getMenuInflater().inflate(R.menu.main_menu, menu);
+            }} catch(Exception e){}
         return true;
     }
     @Override
@@ -151,10 +150,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
-            Log.e(TAG, "HereTommy");
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
-            Log.e(TAG, e + "HERE TOMMTY");
 
         }
         return c; // returns null if camera is unavailable
