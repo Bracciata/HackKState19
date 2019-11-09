@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        Toast.makeText(getActivity(), (String)("Confidence: "+minConfidenceOfBlock),
+        Toast.makeText(getApplicationContext(), ("Confidence: " + minConfidenceOfBlock),
                 Toast.LENGTH_LONG).show();
         return resultText;
     }
