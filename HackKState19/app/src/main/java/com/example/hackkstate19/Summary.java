@@ -1,43 +1,60 @@
 package com.example.hackkstate19;
 
-import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
+import org.json.JSONObject;
+import java.util.logging.Logger;
 
 public class Summary{
 
-    private static int countSentences(
-            String someString, int index) {
-        if (index >= someString.length()) {
-            return 0;
+    public static String request(String url, String title, String text, Integer percentage, Integer sentencesNum) {
+        System.out.println("text" + text+ " DAAAAANNNNNNNYY");
+        String url_Construction = "https://aylien-text.p.rapidapi.com/summarize?";
+        if(url != null && !url.isEmpty()) {
+            url_Construction += "url=" + url + '&';
+            System.out.println(url);
+        }
+        if (!title.isEmpty()){
+            title = title.replaceAll("\\s", "\\%20"); // Setting string to html format
+            url_Construction += "title=" + title + '&';
+            System.out.println(title);
+        }
+        if (!text.isEmpty()) {
+            text = text.replaceAll("\\s", "\\%20"); // Setting string to html forma
+            url_Construction += "text=" + text + '&';
+            System.out.println(text);
+        }
+        if (sentencesNum != -1) { // Applying -1 as a magic number if no sentence number is given
+            url_Construction += "sentences_number=" + sentencesNum + '&';
+            System.out.println(sentencesNum);
+        }
+        if (percentage >= 0 && percentage <= 100) {
+            url_Construction += "sentences_percentage=" + percentage;
+            System.out.println(percentage);
         }
 
-        int count = someString.charAt(index) == '.' ? 1 : 0;
-        return count + countSentences(
-                someString, index + 1);
-    }
-
-    public static String request(String url, String text, int percentage) {
-
-        int sentenceCount =  countSentences(text, 0);
-        String sentNum = String.valueOf(((percentage/100)*sentenceCount));
-
-        text = text.replaceAll("\\b \\b", "\\%20"); // Converting the string to the the proper format
-
-        HttpResponse<String> response;
-
+        String response;
+        System.out.println(url_Construction);
         try {
-            response = Unirest.post("https://textanalysis-text-summarization.p.rapidapi.com/text-summarizer")
-                    .header("x-rapidapi-host", "textanalysis-text-summarization.p.rapidapi.com")
+            response = Unirest.get(url_Construction)
+                    .header("x-rapidapi-host", "aylien-text.p.rapidapi.com")
                     .header("x-rapidapi-key", "0534417232msh84f78ec581c2123p1e0312jsn15a2c5ceafd1")
-                    .header("content-type", "application/json")
-                    .header("accept", "application/json")
-                    .body(String.format("{\"url\":%s,\"text\":%s,\"sentnum\":%s}", url, text, sentNum))
-                    .asString();
+                    .asString().getBody();
         } catch (Exception e) {
-            System.out.println("Uh Oh"); // Add in Exception Handler
             return null;
         }
-        return response.toString();
+        String summary = "";
+        try {
+            JSONObject test = new JSONObject(response);
+            System.out.println("11");
+            Object sentenceObject =  test.get("sentences");
+            System.out.println("2");
+            summary = sentenceObject.toString().substring(2,sentenceObject.toString().length()-2);
+            System.out.println(summary);
+
+        } catch (Exception e){
+            System.out.println("Ummmm");
+        }
+        return summary;
     }
 
 }
