@@ -1,8 +1,7 @@
 package com.example.hackkstate19;
 
 import com.mashape.unirest.http.Unirest;
-import org.apache.http.HttpEntity;
-
+import org.json.JSONObject;
 
 public class Summary{
 
@@ -43,7 +42,14 @@ public class Summary{
             System.out.println("Uh Oh"); // Add in Exception Handler
             return null;
         }
-        return response;
+        String summary = "";
+        try {
+            JSONObject test = new JSONObject(response);
+            summary =  test.toString();
+        } catch (Exception e){
+            System.out.println("Ummmm");
+        }
+        return summary;
     }
 
 }
