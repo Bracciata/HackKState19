@@ -54,6 +54,7 @@ import static android.content.ContentValues.TAG;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private static final int GALLERY_REQUEST_CODE = 404;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXT_STORAGE = 12;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 14;
     private Menu menu;
     private Camera mCamera;
     private CameraPreview mPreview;
@@ -161,6 +162,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     // functionality that depends on this permission.
                 }
                 return;
+
+            }
+            case MY_PERMISSIONS_REQUEST_CAMERA:{
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    setupCamera();
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getApplicationContext(), ("NGL you kind of need that..."),
+                            Toast.LENGTH_LONG).show();                }
             }
 
             // other 'case' lines to check for other
@@ -283,16 +297,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    void loadCamera() {
-        try {
-            mCamera.release();
-        } catch (Exception e) {
-
-        }
-        setContentView(R.layout.activity_main);
-        invalidateOptionsMenu();
-
-        // Create an instance of Camera
+    void setupCamera(){
         mCamera = getCameraInstance();
 
         // Create our Preview view and set it as the content of our activity.
@@ -311,7 +316,40 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
         );
     }
+    void loadCamera() {
+        try {
+            mCamera.release();
+        } catch (Exception e) {
 
+        }
+        setContentView(R.layout.activity_main);
+        invalidateOptionsMenu();
+
+        // Ensures camera is permitted then runs
+        checkCameraPermissions();
+
+    }
+private void  checkCameraPermissions(){
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+        // Permission is not granted
+        // Permission is not granted
+        // Should we show an explanation?
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.CAMERA)) {
+            // Show an explanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+        } else {
+            // No explanation needed; request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
+        }
+    }else{
+        setupCamera();
+        }
+}
     // After selecting image call the following method.
     void processImage(Bitmap image) {
         FirebaseVisionDocumentTextRecognizer detector = getCloudDocumentRecognizer();
