@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_upload"
-        android:title="Upload"/>
+        android:title="Upload"
+        android:icon="@drawable/ic_photo_library"/>
     <item
         android:id="@+id/menu_settings"
-        android:title="Settings"/>
+        android:title="Settings"
+        android:icon="@drawable/ic_settings"/>
 </menu>
