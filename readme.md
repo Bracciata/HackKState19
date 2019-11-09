@@ -19,4 +19,7 @@
 #### Info goes here
 
 ## Technologies Used
-* Google 
+* Google Machine Learning Text Recognition 
+* Text Summarization API
+* Java
+* Android Studio
