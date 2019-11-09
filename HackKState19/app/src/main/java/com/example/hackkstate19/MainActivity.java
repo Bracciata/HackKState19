@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         // Task completed successfully
                         fullText = pullText(result);
                         //Send the above to Danny's summary code.
-                        summary = Summary.request("", "Wuuut", fullText, 20, -1).toString(); // Input Needed Info here
+                        summary = Summary.request("", "Wuuut", fullText, 20, -1); // Input Needed Info here
 
                     }
                 })

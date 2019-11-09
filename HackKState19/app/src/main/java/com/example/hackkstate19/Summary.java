@@ -45,7 +45,9 @@ public class Summary{
         String summary = "";
         try {
             JSONObject test = new JSONObject(response);
-            summary =  test.toString();
+            Object sentenceObject =  test.get("sentences");
+            summary = sentenceObject.toString().substring(2,sentenceObject.toString().length()-2);
+
         } catch (Exception e){
             System.out.println("Ummmm");
         }
