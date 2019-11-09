@@ -11,7 +11,7 @@
         android:layout_above="@id/button_retake"
         android:layout_alignParentTop="false"
         android:layout_weight="1" />
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom|center"
@@ -20,21 +20,29 @@
 
         <Button
             android:id="@+id/button_retake"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="false"
+            android:layout_weight=".5"
             android:layout_gravity="center"
-            android:text="Retake" />
+            android:text="@string/retake"
+            android:background="@color/colorAccent"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            />
 
         <Button
             android:id="@+id/button_confirm"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="false"
-            android:layout_centerVertical="false"
+            android:layout_weight=".5"
             android:layout_gravity="center"
-            android:layout_toRightOf="@id/button_retake"
-            android:text="Confirm" />
+            android:text="@string/confirm"
+            android:background="@color/colorAccent"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            />
 
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
