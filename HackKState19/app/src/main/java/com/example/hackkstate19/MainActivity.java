@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), true);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+        final Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
         image.setImageBitmap(rotatedBitmap);
         Button retakeButton = (Button) findViewById(R.id.button_retake);
         retakeButton.setOnClickListener(
