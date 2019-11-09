@@ -16,8 +16,8 @@
 ### Accessible
 * Color choice
 
-### Handles Multiple Languages
-#### Talk about that stuff here
+### Supports Multiple Languages
+* list of languages 
 
 ## Specs
 #### Info goes here
