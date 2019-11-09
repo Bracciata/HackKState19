@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(FirebaseVisionDocumentText result) {
                         // Task completed successfully
-                        // ...
+                        String text = pullText(result);
+                        //Send the above to Danny's summary code.
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -55,7 +56,37 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-    // Code from:
+
+    // Code from: https://firebase.google.com/docs/ml-kit/android/recognize-text
+    String pullText(FirebaseVisionDocumentText result){
+        String resultText = result.getText();
+        // The following can be used for logging confidence.
+        for (FirebaseVisionDocumentText.Block block: result.getBlocks()) {
+            String blockText = block.getText();
+            Float blockConfidence = block.getConfidence();
+            List<RecognizedLanguage> blockRecognizedLanguages = block.getRecognizedLanguages();
+            Rect blockFrame = block.getBoundingBox();
+            for (FirebaseVisionDocumentText.Paragraph paragraph: block.getParagraphs()) {
+                String paragraphText = paragraph.getText();
+                Float paragraphConfidence = paragraph.getConfidence();
+                List<RecognizedLanguage> paragraphRecognizedLanguages = paragraph.getRecognizedLanguages();
+                Rect paragraphFrame = paragraph.getBoundingBox();
+                for (FirebaseVisionDocumentText.Word word: paragraph.getWords()) {
+                    String wordText = word.getText();
+                    Float wordConfidence = word.getConfidence();
+                    List<RecognizedLanguage> wordRecognizedLanguages = word.getRecognizedLanguages();
+                    Rect wordFrame = word.getBoundingBox();
+                    for (FirebaseVisionDocumentText.Symbol symbol: word.getSymbols()) {
+                        String symbolText = symbol.getText();
+                        Float symbolConfidence = symbol.getConfidence();
+                        List<RecognizedLanguage> symbolRecognizedLanguages = symbol.getRecognizedLanguages();
+                        Rect symbolFrame = symbol.getBoundingBox();
+                    }
+                }
+            }
+        }
+        return resultText;
+    }
     private FirebaseVisionDocumentTextRecognizer getCloudDocumentRecognizer() {
         // [START mlkit_cloud_doc_recognizer]
         // Or, to provide language hints to assist with language detection:
