@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher_icon);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         loadCamera();
 
 
@@ -208,10 +211,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
-            Log.e(TAG, "HereTommy");
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
-            Log.e(TAG, e + "HERE TOMMTY");
 
         }
         return c; // returns null if camera is unavailable
