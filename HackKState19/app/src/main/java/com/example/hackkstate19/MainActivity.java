@@ -89,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        Toast.makeText(getApplicationContext(), ("Confidence: " + minConfidenceOfBlock),
+        double outputConfidence = Math.round(minConfidenceOfBlock * 1000.0) / 1000.0;
+        Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
         return resultText;
     }
