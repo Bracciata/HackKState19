@@ -1,63 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        />
 
-    <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            app:srcCompat="@color/colorPrimaryDark" />
-
-        <EditText
-            android:id="@+id/nameOfApp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#4DB6AC"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:padding="20"
-            android:text="Name of App"
-            android:textSize="30sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="36dp" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="225dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:background="#82E9DE"
-            android:text="Take Picture"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="36sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="36dp" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="225"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:background="#82E9DE"
-            android:text="Upload File"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="36sp" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/button_capture"
+        android:text="Capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+</LinearLayout>

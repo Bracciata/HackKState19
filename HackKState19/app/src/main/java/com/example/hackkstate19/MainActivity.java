@@ -1,12 +1,14 @@
 package com.example.hackkstate19;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.graphics.Point;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,27 +16,90 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.document.FirebaseVisionCloudDocumentRecognizerOptions;
 import com.google.firebase.ml.vision.document.FirebaseVisionDocumentText;
 import com.google.firebase.ml.vision.document.FirebaseVisionDocumentTextRecognizer;
-import com.google.firebase.ml.vision.text.FirebaseVisionCloudTextRecognizerOptions;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity {
+
+    private Camera mCamera;
+    private CameraPreview mPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create an instance of Camera
+        mCamera = getCameraInstance();
+
+        // Create our Preview view and set it as the content of our activity.
+        mPreview = new CameraPreview(this, mCamera);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(mPreview);
+        // Add a listener to the Capture button
+        Button captureButton = (Button) findViewById(R.id.button_capture);
+        captureButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // get an image from the camera
+                        mCamera.takePicture(null, null, mPicture);
+                    }
+                }
+        );
+    }
+    @Override
+    protected void onPause() {
+        mCamera.release();
+        super.onPause();
+    }
+    @Override
+    protected void onDestroy() {
+        if (mCamera != null) {
+            mCamera.release();
+        }
+        super.onDestroy();
+    }
+
+    // https://developer.android.com/guide/topics/media/camera
+    /** A safe way to get an instance of the Camera object. */
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open(); // attempt to get a Camera instance
+            Log.e(TAG, "HereTommy" );
+        }
+        catch (Exception e){
+            // Camera is not available (in use or does not exist)
+            Log.e(TAG, e+"HERE TOMMTY" );
+
+        }
+        return c; // returns null if camera is unavailable
+    }
+    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            if (bmp == null){
+                Log.d(TAG, "Error creating media file, check storage permissions");
+                return;
+            }
+            openConfirmationScreen(bmp);
+        }
+    };
+    void openConfirmationScreen(Bitmap bmp){
+
     }
     // After selecting image call the following method.
     void processImage(Bitmap image){
@@ -94,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
         return resultText;
     }
+
     private FirebaseVisionDocumentTextRecognizer getCloudDocumentRecognizer() {
         // [START mlkit_cloud_doc_recognizer]
         // Or, to provide language hints to assist with language detection:
