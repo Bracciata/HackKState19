@@ -16,7 +16,7 @@ public class Summary{
                 someString, index + 1);
     }
 
-    protected HttpResponse<String> request(String url, String text, int percentage) {
+    public static String request(String url, String text, int percentage) {
 
         int sentenceCount =  countSentences(text, 0);
         String sentNum = String.valueOf(((percentage/100)*sentenceCount));
@@ -37,7 +37,7 @@ public class Summary{
             System.out.println("Uh Oh"); // Add in Exception Handler
             return null;
         }
-        return response;
+        return response.toString();
     }
 
 }
