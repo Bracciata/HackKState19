@@ -1,5 +1,10 @@
 package com.example.hackkstate19;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -13,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,10 +33,12 @@ import com.google.firebase.ml.vision.text.RecognizedLanguage;
 import java.util.Arrays;
 import java.util.List;
 
+import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private Camera mCamera;
     private CameraPreview mPreview;
 
@@ -57,17 +66,40 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
-    @Override
-    protected void onPause() {
-        mCamera.release();
-        super.onPause();
-    }
+
     @Override
     protected void onDestroy() {
         if (mCamera != null) {
             mCamera.release();
         }
         super.onDestroy();
+    }
+    void checkPermissions(){
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+        }
     }
 
     // https://developer.android.com/guide/topics/media/camera
@@ -95,11 +127,27 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Error creating media file, check storage permissions");
                 return;
             }
-            openConfirmationScreen(bmp);
+            openConfirmationDialog(bmp);
         }
     };
-    void openConfirmationScreen(Bitmap bmp){
 
+    void openConfirmationDialog(Bitmap bmp){
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Does this look correct?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Process and output
+                    }
+                })
+                .setNegativeButton("Retake", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Restart
+                    }
+                });
+        // Create the AlertDialog object and show it
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
     // After selecting image call the following method.
     void processImage(Bitmap image){
