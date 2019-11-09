@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle("My title");
         loadCamera();
         // Add a listener to the Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
