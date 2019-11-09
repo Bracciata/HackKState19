@@ -1,7 +1,11 @@
 package com.example.hackkstate19;
 
-import org.junit.Test;
+import com.mashape.unirest.http.HttpResponse;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.junit.Test;
+import com.mashape.unirest.request.HttpRequest;
 import static org.junit.Assert.*;
 
 /**
@@ -12,6 +16,9 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        String fullText = "Sometimes services offer paged requests. How this is done is not standardized but Unirest proves a mechanism to follow pages until all have been consumed. You must provide two functions for extracting the next page.";
+        String summary = Summary.request("", "Okay", fullText, 20, -1);
+        System.out.println(summary);
+        assertEquals("You must provide two functions for extracting the next page.", summary);
     }
 }
