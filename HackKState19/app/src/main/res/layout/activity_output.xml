@@ -6,6 +6,7 @@
     android:layout_height="fill_parent"
     >
 
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -16,4 +17,11 @@
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         app:menu="@menu/navigation" />
+
+    <TextView
+        android:id="@+id/output_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_above="@id/navigation"></TextView>
 </RelativeLayout>

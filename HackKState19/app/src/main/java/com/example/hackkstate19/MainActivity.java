@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,12 +70,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private void openFull() {
         BottomNavigationView btv = findViewById(R.id.navigation);
-        btv.setSelectedItemId(R.id.full_text);
+        btv.setSelectedItemId(R.id.navigation_full);
+        TextView outputText = findViewById(R.id.output_text);
+        outputText.setText(fullText);
     }
-
+    String summary  = "";
+    String fullText="";
     private void openSummary() {
         BottomNavigationView btv = findViewById(R.id.navigation);
-        btv.setSelectedItemId(R.id.summary_text);
+        btv.setSelectedItemId(R.id.navigation_summary);
+        TextView outputText = findViewById(R.id.output_text);
+        outputText.setText(summary);
+
     }
 
     @Override
@@ -168,13 +175,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     @Override
                     public void onClick(View v) {
                         // Opens analysis output
-                        openOutput();
+                        openOutput(rotatedBitmap);
                     }
                 }
         );
     }
 
-    void openOutput() {
+    void openOutput(Bitmap bmp) {
         setContentView(R.layout.activity_output);
         BottomNavigationView btv = findViewById(R.id.navigation);
         btv.setOnNavigationItemSelectedListener(MainActivity.this);
