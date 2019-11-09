@@ -44,7 +44,7 @@ import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-
+    private Menu menu;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private Camera mCamera;
     private CameraPreview mPreview;
@@ -58,12 +58,27 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(this.getWindow().getDecorView().findViewById(android.R.id.content)==findViewById(R.id.rl_root_one)) {
+        try{
+        if(this.findViewById(android.R.id.content).getRootView()==findViewById(R.id.rl_root_one).getRootView()) {
+            System.out.println("TEARSTOMMY");
+            this.menu=menu;
             getMenuInflater().inflate(R.menu.main_menu, menu);
-        }
+        }} catch(Exception e){}
         return true;
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                // Open Settings
+                return true;
+            case R.id.menu_upload:
+                // Open upload
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -79,16 +94,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void openFull() {
-        BottomNavigationView btv = findViewById(R.id.navigation);
-        btv.setSelectedItemId(R.id.navigation_full);
+
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(fullText);
     }
     String summary  = "";
     String fullText="";
     private void openSummary() {
-        BottomNavigationView btv = findViewById(R.id.navigation);
-        btv.setSelectedItemId(R.id.navigation_summary);
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(summary);
 
@@ -163,6 +175,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     };
 
     void openConfirmationScreen(Bitmap bmp) {
+        invalidateOptionsMenu();
+
+
         setContentView(R.layout.activity_confirmation);
         ImageView image = findViewById(R.id.imageview_confirm);
         Matrix matrix = new Matrix();
@@ -193,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     void openOutput(Bitmap bmp) {
         // Process image
+        invalidateOptionsMenu();
         processImage(bmp);
         setContentView(R.layout.activity_output);
         BottomNavigationView btv = findViewById(R.id.navigation);
@@ -209,12 +225,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     void loadCamera() {
-        setContentView(R.layout.activity_main);
         try {
             mCamera.release();
         } catch (Exception e) {
 
         }
+        setContentView(R.layout.activity_main);
+        invalidateOptionsMenu();
+
         // Create an instance of Camera
         mCamera = getCameraInstance();
 
