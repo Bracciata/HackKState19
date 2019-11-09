@@ -184,12 +184,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     void openOutput(Bitmap bmp) {
         // Process image
-        processImage(bmp);
+        // processImage(bmp);
 
         setContentView(R.layout.activity_output);
-        BottomNavigationView btv = findViewById(R.id.navigation);
-        btv.setOnNavigationItemSelectedListener(MainActivity.this);
-        openSummary();
+        //BottomNavigationView btv = findViewById(R.id.navigation);
+        //btv.setOnNavigationItemSelectedListener(MainActivity.this);
+        //openSummary();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
