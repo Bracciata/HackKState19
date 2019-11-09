@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         loadCamera();
         // Add a listener to the Capture button
         Button captureButton = (Button) findViewById(R.id.button_capture);
@@ -137,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         image.setImageBitmap(rotatedBitmap);
     }
     void loadCamera(){
+        setContentView(R.layout.activity_main);
         try{
             mCamera.release();
         }catch (Exception e){
