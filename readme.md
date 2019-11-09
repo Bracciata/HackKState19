@@ -6,7 +6,11 @@
 #### Simply snap a pic of your textbook and our app will summarize it. 
 
 
+## Features
+
+
 ## Highlights
+### Design
 * Color scheme good for concentration (blue) and productivity (green)
 
 ### Accessible
