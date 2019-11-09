@@ -27,6 +27,7 @@ public class ExampleUnitTest {
         try {
             JSONObject test = new JSONObject(response);
            Object summary2 =  test.get("sentences");
+            summary= summary2.toString().substring(2,summary2.toString().length()-2);
 
         } catch (Exception e){
             System.out.println("Ummmm");
