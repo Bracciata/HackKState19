@@ -10,11 +10,14 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:paddingBottom="10dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="start"
         android:background="@color/colorPrimary"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
+        app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+        app:itemTextAppearanceInactive="@style/BottomNavigationView"
         app:menu="@menu/navigation" />
 
     <TextView
