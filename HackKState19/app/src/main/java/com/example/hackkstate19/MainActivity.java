@@ -185,7 +185,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     void openOutput(Bitmap bmp) {
         // Process image
         processImage(bmp);
-
         setContentView(R.layout.activity_output);
         BottomNavigationView btv = findViewById(R.id.navigation);
         btv.setOnNavigationItemSelectedListener(MainActivity.this);
@@ -240,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         fullText = pullText(result);
                         //Send the above to Danny's summary code.
                         summary = Summary.request("", fullText, 20);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
