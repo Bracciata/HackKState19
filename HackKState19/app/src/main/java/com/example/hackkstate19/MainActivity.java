@@ -61,9 +61,11 @@ public class MainActivity extends AppCompatActivity {
     String pullText(FirebaseVisionDocumentText result){
         String resultText = result.getText();
         // The following can be used for logging confidence.
+        Float minConfidenceOfBlock = 1.0f;
         for (FirebaseVisionDocumentText.Block block: result.getBlocks()) {
             String blockText = block.getText();
             Float blockConfidence = block.getConfidence();
+            minConfidenceOfBlock = Math.min(blockConfidence,minConfidenceOfBlock);
             List<RecognizedLanguage> blockRecognizedLanguages = block.getRecognizedLanguages();
             Rect blockFrame = block.getBoundingBox();
             for (FirebaseVisionDocumentText.Paragraph paragraph: block.getParagraphs()) {
@@ -85,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        Toast.makeText(getActivity(), (String)("Confidence: "+minConfidenceOfBlock),
+                Toast.LENGTH_LONG).show();
         return resultText;
     }
     private FirebaseVisionDocumentTextRecognizer getCloudDocumentRecognizer() {
