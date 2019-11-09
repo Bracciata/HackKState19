@@ -58,7 +58,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        if(this.getWindow().getDecorView().findViewById(android.R.id.content)==findViewById(R.id.rl_root_one)) {
+            getMenuInflater().inflate(R.menu.main_menu, menu);
+        }
         return true;
     }
 
