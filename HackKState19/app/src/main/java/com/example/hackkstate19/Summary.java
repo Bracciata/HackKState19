@@ -1,60 +1,42 @@
 package com.example.hackkstate19;
 
-import com.mashape.unirest.http.Unirest;
-import org.json.JSONObject;
-import java.util.logging.Logger;
 
-public class Summary{
+import android.os.AsyncTask;
 
-    public static String request(String url, String title, String text, Integer percentage, Integer sentencesNum) {
-        System.out.println("text" + text+ " DAAAAANNNNNNNYY");
-        String url_Construction = "https://aylien-text.p.rapidapi.com/summarize?";
-        if(url != null && !url.isEmpty()) {
-            url_Construction += "url=" + url + '&';
-            System.out.println(url);
-        }
-        if (!title.isEmpty()){
-            title = title.replaceAll("\\s", "\\%20"); // Setting string to html format
-            url_Construction += "title=" + title + '&';
-            System.out.println(title);
-        }
-        if (!text.isEmpty()) {
-            text = text.replaceAll("\\s", "\\%20"); // Setting string to html forma
-            url_Construction += "text=" + text + '&';
-            System.out.println(text);
-        }
-        if (sentencesNum != -1) { // Applying -1 as a magic number if no sentence number is given
-            url_Construction += "sentences_number=" + sentencesNum + '&';
-            System.out.println(sentencesNum);
-        }
-        if (percentage >= 0 && percentage <= 100) {
-            url_Construction += "sentences_percentage=" + percentage;
-            System.out.println(percentage);
-        }
+import com.aylien.textapi.TextAPIClient;
+import com.aylien.textapi.TextAPIException;
+import com.aylien.textapi.parameters.SummarizeParams;
+import com.aylien.textapi.responses.Summarize;
 
-        String response;
-        System.out.println(url_Construction);
+
+abstract class Summary extends AsyncTask<String, Void, Summarize> {
+
+    protected static String summarizeAPISetUp(String title, String text, Integer percentage) {
+        Summarize response = new Summarize();
+        System.out.println(title);
+        System.out.println(text);
+        System.out.println(percentage);
         try {
-            response = Unirest.get(url_Construction)
-                    .header("x-rapidapi-host", "aylien-text.p.rapidapi.com")
-                    .header("x-rapidapi-key", "0534417232msh84f78ec581c2123p1e0312jsn15a2c5ceafd1")
-                    .asString().getBody();
-        } catch (Exception e) {
-            return null;
+            SummarizeParams.Builder builder = SummarizeParams.newBuilder();
+            TextAPIClient client = new TextAPIClient("dabf4ee3", "cdf4c21cc5423ca1b0f7399489340159");
+            builder.setTitle(title);
+            builder.setPercentageOfSentences(percentage);
+            builder.setText(text);
+            response = client.summarize(builder.build());
+        } catch (TextAPIException e) {
+            e.printStackTrace();
         }
-        String summary = "";
-        try {
-            JSONObject test = new JSONObject(response);
-            System.out.println("11");
-            Object sentenceObject =  test.get("sentences");
-            System.out.println("2");
-            summary = sentenceObject.toString().substring(2,sentenceObject.toString().length()-2);
-            System.out.println(summary);
 
-        } catch (Exception e){
-            System.out.println("Ummmm");
+        String sentences = "";
+        if (response != null && percentage > 0 && percentage <= 100) {
+            for (String sentence : response.getSentences()) {
+                sentences += sentence + ' ';
+            }
         }
-        return summary;
+
+        return sentences;
     }
+
+
 
 }
