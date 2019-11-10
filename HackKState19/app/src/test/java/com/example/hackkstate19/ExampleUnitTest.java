@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import com.aylien.textapi.responses.Summarize;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**
@@ -59,7 +58,7 @@ public class ExampleUnitTest {
                 " so may unbalance the tree. Deleting a node may reduce the height of some subtree" +
                 " which will affect the balance factor of its ancestors. The same rotations may be" +
                 " necessary to rebalance ancestor nodes.";
-        String response = Summary.summarizeAPISetUp("Okay", fullText,0);
+        String response = Summary.summarizeAPISetUp("Okay", fullText, 0);
         assertEquals("", response);
     }
 

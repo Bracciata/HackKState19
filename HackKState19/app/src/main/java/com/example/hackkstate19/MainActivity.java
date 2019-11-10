@@ -22,11 +22,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,11 +49,9 @@ import com.google.firebase.ml.vision.document.FirebaseVisionDocumentText;
 import com.google.firebase.ml.vision.document.FirebaseVisionDocumentTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -60,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Menu menu;
     private Camera mCamera;
     private CameraPreview mPreview;
-    private int percentage=20;
+    public static int percentage=20;
+    public static String mode = "summary";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,20 +152,52 @@ return true;
                 return super.onOptionsItemSelected(item);
         }
     }
-    private  void openSettings(){
-                                         setContentView(R.layout.activity_settings);
-                                         Button confirmButton = findViewById(R.id.button_confirm_percent);
-                                         confirmButton.setOnClickListener(
-                                                         new View.OnClickListener() {
-                                                             @Override
-                                                             public void onClick(View v) {
-                                                                 validatePercentage();
-                                                             }
-                                                             }
-                                                         
-                                              );
+    private  void openSettings() {
+        setContentView(R.layout.activity_settings);
+        Button confirmButton = findViewById(R.id.button_confirm_percent);
+        confirmButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        validatePercentage();
+                    }
+                }
 
-}
+        );
+        final Spinner dropdown = findViewById(R.id.analysis_type);
+        String[] items = new String[]{"HashTag Suggestion", "Sentiment", "Summary", "Who/When/Where"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                String msupplier=dropdown.getSelectedItem().toString();
+                MainActivity.mode = msupplier;
+                Log.e("Selected item : ",msupplier);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+        Button retakeSetting = (Button) findViewById(R.id.settings_back);
+        retakeSetting.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadCamera();
+                    }
+                }
+        );
+    }
+
+
 private void validatePercentage(){
     EditText percent = findViewById(R.id.actual_percentage);
     int percentageValue;
@@ -197,6 +231,7 @@ private void validatePercentage(){
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+                    Toast.makeText(this, "Please give your permission.", Toast.LENGTH_LONG).show();
                 }
                 return;
 
@@ -447,7 +482,14 @@ private void  checkCameraPermissions(){
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
        resultText = resultText.replaceAll("(\\r|\\n)", "");
-       new Summary().execute(resultText);
+       //new Summary().execute(resultText);
+
+       switch (mode){
+           case "HashTag Suggestion": new HashTagSuggestion().execute(resultText); System.out.println("LOOL");break;
+           case "Sentiment": new Sentiment().execute(resultText); break;
+           case "Summary": new Summary().execute(resultText); break;
+           case "Who/When/Where": new WhoWhenWhere().execute(resultText); break;
+       }
 
         return resultText;
     }
