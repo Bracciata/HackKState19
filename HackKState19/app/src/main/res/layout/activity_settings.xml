@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_root_four"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
     >
+
+    <Spinner
+        android:id="@+id/analysis_type"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,21 +43,38 @@
 
     </LinearLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="552dp"
-        android:layout_weight="1"></RelativeLayout>
+        android:layout_weight="1">
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/settings_back"
+        android:layout_width="580dp"
+        android:layout_height="90dp"
+        android:layout_margin="5dp"
+        android:layout_weight=".5"
+        android:background="@color/colorAccent"
+        android:text="Back"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/button_confirm_percent"
-        android:layout_width="match_parent"
-        android:layout_height="23dp"
+        android:layout_width="601dp"
+        android:layout_height="90dp"
         android:layout_margin="5dp"
         android:layout_weight=".5"
         android:background="@color/colorAccent"
         android:text="@string/confirm"
         android:textAllCaps="false"
         android:textSize="20sp" />
-
-s
+    </LinearLayout>
 </LinearLayout>

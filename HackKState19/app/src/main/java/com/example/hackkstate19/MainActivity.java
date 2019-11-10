@@ -22,11 +22,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,11 +48,9 @@ import com.google.firebase.ml.vision.document.FirebaseVisionDocumentText;
 import com.google.firebase.ml.vision.document.FirebaseVisionDocumentTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Menu menu;
     private Camera mCamera;
     private CameraPreview mPreview;
-    private int percentage=20;
+    public static int percentage=20;
+    private String mode = "summary";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,20 +151,35 @@ return true;
                 return super.onOptionsItemSelected(item);
         }
     }
-    private  void openSettings(){
-                                         setContentView(R.layout.activity_settings);
-                                         Button confirmButton = findViewById(R.id.button_confirm_percent);
-                                         confirmButton.setOnClickListener(
-                                                         new View.OnClickListener() {
-                                                             @Override
-                                                             public void onClick(View v) {
-                                                                 validatePercentage();
-                                                             }
-                                                             }
-                                                         
-                                              );
+    private  void openSettings() {
+        setContentView(R.layout.activity_settings);
+        Button confirmButton = findViewById(R.id.button_confirm_percent);
+        confirmButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        validatePercentage();
+                    }
+                }
 
-}
+        );
+        Spinner dropdown = findViewById(R.id.analysis_type);
+        String[] items = new String[]{"HashTag Suggestion", "Sentiment", "Summary", "Who/When/Where"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+
+        Button retakeSetting = (Button) findViewById(R.id.settings_back);
+        retakeSetting.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadCamera();
+                    }
+                }
+        );
+    }
+
+
 private void validatePercentage(){
     EditText percent = findViewById(R.id.actual_percentage);
     int percentageValue;
@@ -448,7 +464,16 @@ private void  checkCameraPermissions(){
                 Toast.LENGTH_LONG).show();
        resultText = resultText.replaceAll("(\\r|\\n)", "");
        new Summary().execute(resultText);
+       /*
+       //Implementing other analysis without hard code.
 
+       switch (mode){
+           case "HashTag Suggestion": new HashTagSuggestion().execute(resultText); System.out.println("LOOL");break;
+           case "Sentiment": new Sentiment().execute(resultText); break;
+           case "Summary": new Summary().execute(resultText); break;
+           case "Who/When/Where": new WhoWhenWhere().execute(resultText); break;
+       }
+       */
         return resultText;
     }
 
