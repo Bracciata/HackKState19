@@ -14,6 +14,7 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -199,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(fullText);
     }
-    String summary  = "";
+    static String summary  = "";
     String fullText="";
     private void openSummary() {
         TextView outputText = findViewById(R.id.output_text);
@@ -361,8 +362,7 @@ private void  checkCameraPermissions(){
                     public void onSuccess(FirebaseVisionDocumentText result) {
                         // Task completed successfully
                         fullText = pullText(result);
-                        //Send the above to Danny's summary code.
-                        summary = Summary.summarizeAPISetUp("", "title", 20); // Input Needed Info here
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -372,6 +372,9 @@ private void  checkCameraPermissions(){
                         // ...
                     }
                 });
+    }
+    public static void setSummary(String result){
+        summary = result;
     }
 
     // Code from: https://firebase.google.com/docs/ml-kit/android/recognize-text
@@ -407,6 +410,8 @@ private void  checkCameraPermissions(){
         double outputConfidence = Math.round(minConfidenceOfBlock * 1000.0) / 1000.0;
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
+        new Summary().execute(fullText);
+
         return resultText;
     }
 
