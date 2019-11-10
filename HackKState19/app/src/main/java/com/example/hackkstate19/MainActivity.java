@@ -180,6 +180,7 @@ private void validatePercentage(){
 
                                    Toast.LENGTH_LONG).show(); }else{
                                                this.percentage=percentageValue;
+                                               loadCamera();
     }
     }
 
