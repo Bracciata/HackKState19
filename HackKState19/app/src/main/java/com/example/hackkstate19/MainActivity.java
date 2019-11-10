@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.menu_settings:
                 // Open Settings
+                setContentView(R.layout.activity_settings);
                 return true;
             case R.id.menu_upload:
 // Open Upload

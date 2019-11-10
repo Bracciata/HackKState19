@@ -2,5 +2,5 @@
     <string name="app_name">SimplySnap</string>
     <string name="retake">Retake</string>
     <string name="confirm">Confirm</string>
-
+    <string name="summary_percentage">Percent of Text Remaining</string>
 </resources>
