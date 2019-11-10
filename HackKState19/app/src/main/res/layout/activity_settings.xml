@@ -30,30 +30,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".2"
-            android:inputType="number" />
+            android:inputType="number"
+            android:hint="20"/>
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom|center"
-        android:orientation="horizontal"
-        >
+        android:layout_height="552dp"
+        android:layout_weight="1"></RelativeLayout>
 
-        <Button
-            android:id="@+id/button_confirm"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:layout_gravity="bottom"
-            android:text="@string/confirm"
-            android:background="@color/colorAccent"
-            android:layout_margin="5dp"
-            android:textSize="20sp"
-            android:textAllCaps="false"
-            />
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="23dp"
+        android:layout_margin="5dp"
+        android:layout_weight=".5"
+        android:background="@color/colorAccent"
+        android:text="@string/confirm"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
 
-    </LinearLayout>
-
+s
 </LinearLayout>
