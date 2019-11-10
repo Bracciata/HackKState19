@@ -446,7 +446,7 @@ private void  checkCameraPermissions(){
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
        resultText = resultText.replaceAll("(\\r|\\n)", "");
-        // new Summary().execute(fullText);
+       new Summary().execute(resultText);
 
         return resultText;
     }
