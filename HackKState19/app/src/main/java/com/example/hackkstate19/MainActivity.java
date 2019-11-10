@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Camera mCamera;
     private CameraPreview mPreview;
     public static int percentage=20;
-    public static String mode = "summary";
+    public static String mode = "Summary";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,15 +173,16 @@ return true;
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-                // TODO Auto-generated method stub
                 String msupplier=dropdown.getSelectedItem().toString();
-                MainActivity.mode = msupplier;
+                if (!msupplier.isEmpty() || msupplier == "") {
+                    MainActivity.mode = msupplier;
+                }
                 Log.e("Selected item : ",msupplier);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
+                MainActivity.mode = "Summary";
 
             }
         });
