@@ -411,7 +411,8 @@ private void  checkCameraPermissions(){
         double outputConfidence = Math.round(minConfidenceOfBlock * 1000.0) / 1000.0;
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
-        new Summary().execute(fullText);
+       resultText = resultText.replaceAll("(\\r|\\n)", "");
+        // new Summary().execute(fullText);
 
         return resultText;
     }
