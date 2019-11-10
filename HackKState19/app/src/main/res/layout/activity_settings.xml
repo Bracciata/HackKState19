@@ -41,7 +41,7 @@
         android:layout_weight="1"></RelativeLayout>
 
     <Button
-        android:id="@+id/button_confirm"
+        android:id="@+id/button_confirm_percent"
         android:layout_width="match_parent"
         android:layout_height="23dp"
         android:layout_margin="5dp"
