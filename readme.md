@@ -17,7 +17,7 @@
 ### After we completed the design process, we moved into the implementation of our app using Android Studio. To save time we divided the work among our team. We had one person specialize in the user interface, one person specialize in the backend use of the APIs, and one person design the logo, create the documentation, and help the other team members debug their sections. For the user interface, we used XML. This posed a challenge as none of our team members had used XML before. With the help of documentation, we were able to create a user interface to our liking. In the backend, we used Java and two APIs for our app. The first API, Google Firebase Text Recognition, recognizes text from images, and the second API, Unirest-Java, summarizes the text. We had not used either of these APIs before, so this also posed a challenge. All of us did have experience programming in Java though, so this made learning the APIs easier. To create the logo for our app we used Photoshop, which one of our team members had previous experience in. 
 
 ## Challenges we ran into
-### The documentation for the two APIs we used was incomplete, so we had to ___danny pls help___
+### The documentation for the two APIs we used was incomplete. We had tested several different APIs for summarization, but some were outdated. We did not have much experience with HTTP Repsonses for getting information. As a result, we had quite a few obstacles. 
 ### The documentation for the XML was also lacking. It was updated recently, within the past couple of years, and no longer supported a lot of the stuff in examples online. This made it difficult to find a solution to our problem quickly as we had to find a recent solution. 
 
 ## Accomplishments that we're proud of
