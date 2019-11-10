@@ -37,5 +37,32 @@
 * Add support for PDFs
 
 ## Screenshots
-Inline-style: 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![alt text](screenshots/img_1.png "Logo Title Text 1")
+
+![alt text](screenshots/img_2.png "Logo Title Text 1")
+
+![alt text](screenshots/img_3.png "Logo Title Text 1")
+
+![alt text](screenshots/img_4.png "Logo Title Text 1")
+
+![alt text](screenshots/img_5.png "Logo Title Text 1")
+
+![alt text](screenshots/img_6.png "Logo Title Text 1")
+
+![alt text](screenshots/img_7.png "Logo Title Text 1")
+
+![alt text](screenshots/img_8.png "Logo Title Text 1")
+
+![alt text](screenshots/img_9.png "Logo Title Text 1")
+
+![alt text](screenshots/img_10.png "Logo Title Text 1")
+
+![alt text](screenshots/img_11.png "Logo Title Text 1")
+
+![alt text](screenshots/img_12.png "Logo Title Text 1")
+
+![alt text](screenshots/img_13.png "Logo Title Text 1")
+
+![alt text](screenshots/img_14.png "Logo Title Text 1")
+
+![alt text](screenshots/img_15.png "Logo Title Text 1")
