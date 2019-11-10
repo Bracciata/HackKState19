@@ -14,6 +14,7 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Menu menu;
     private Camera mCamera;
     private CameraPreview mPreview;
-
+    private int percentage=20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.menu_settings:
                 // Open Settings
-                return true;
+openSettings();
+return true;
             case R.id.menu_upload:
 // Open Upload
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -147,6 +150,40 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return super.onOptionsItemSelected(item);
         }
     }
+    private  void openSettings(){
+                                         setContentView(R.layout.activity_settings);
+                                         Button confirmButton = findViewById(R.id.button_confirm_percent);
+                                         confirmButton.setOnClickListener(
+                                                         new View.OnClickListener() {
+                                                             @Override
+                                                             public void onClick(View v) {
+                                                                 validatePercentage();
+                                                             }
+                                                             }
+                                                         
+                                              );
+
+}
+private void validatePercentage(){
+    EditText percent = findViewById(R.id.actual_percentage);
+    int percentageValue;
+    try {
+         percentageValue = Integer.parseInt(percent.getText().toString());
+
+    }              catch(Exception e){
+                    Toast.makeText(getApplicationContext(), ("Please enter a valid number."),
+                            Toast.LENGTH_LONG).show();
+                    return;
+    }
+    if(percentageValue<0|| percentageValue>100){
+                                      Toast.makeText(getApplicationContext(), ("It has to be between zero and one hundred you goober."),
+
+                                   Toast.LENGTH_LONG).show(); }else{
+                                               this.percentage=percentageValue;
+                                               loadCamera();
+    }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
@@ -199,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(fullText);
     }
-    String summary  = "";
+    static String summary  = "";
     String fullText="";
     private void openSummary() {
         TextView outputText = findViewById(R.id.output_text);
@@ -361,8 +398,7 @@ private void  checkCameraPermissions(){
                     public void onSuccess(FirebaseVisionDocumentText result) {
                         // Task completed successfully
                         fullText = pullText(result);
-                        //Send the above to Danny's summary code.
-                        summary = Summary.summarizeAPISetUp("", "title", 20); // Input Needed Info here
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -372,6 +408,9 @@ private void  checkCameraPermissions(){
                         // ...
                     }
                 });
+    }
+    public static void setSummary(String result){
+        summary = result;
     }
 
     // Code from: https://firebase.google.com/docs/ml-kit/android/recognize-text
@@ -407,6 +446,9 @@ private void  checkCameraPermissions(){
         double outputConfidence = Math.round(minConfidenceOfBlock * 1000.0) / 1000.0;
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
+       resultText = resultText.replaceAll("(\\r|\\n)", "");
+       new Summary().execute(resultText);
+
         return resultText;
     }
 

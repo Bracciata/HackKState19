@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root_four"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        >
+
+
+        <TextView
+            android:id="@+id/summary_percentage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:layout_gravity="center"
+            android:text="@string/summary_percentage"
+            android:textSize="25sp"
+        />
+
+        <EditText
+            android:id="@+id/actual_percentage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"
+            android:inputType="number"
+            android:hint="20"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="552dp"
+        android:layout_weight="1"></RelativeLayout>
+
+    <Button
+        android:id="@+id/button_confirm_percent"
+        android:layout_width="match_parent"
+        android:layout_height="23dp"
+        android:layout_margin="5dp"
+        android:layout_weight=".5"
+        android:background="@color/colorAccent"
+        android:text="@string/confirm"
+        android:textAllCaps="false"
+        android:textSize="20sp" />
+
+s
+</LinearLayout>
