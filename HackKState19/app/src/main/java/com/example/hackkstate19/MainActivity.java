@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Camera mCamera;
     private CameraPreview mPreview;
     public static int percentage=20;
-    private String mode = "summary";
+    public static String mode = "summary";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,10 +164,27 @@ return true;
                 }
 
         );
-        Spinner dropdown = findViewById(R.id.analysis_type);
+        final Spinner dropdown = findViewById(R.id.analysis_type);
         String[] items = new String[]{"HashTag Suggestion", "Sentiment", "Summary", "Who/When/Where"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                String msupplier=dropdown.getSelectedItem().toString();
+                MainActivity.mode = msupplier;
+                Log.e("Selected item : ",msupplier);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
 
         Button retakeSetting = (Button) findViewById(R.id.settings_back);
         retakeSetting.setOnClickListener(
@@ -213,6 +231,7 @@ private void validatePercentage(){
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+                    Toast.makeText(this, "Please give your permission.", Toast.LENGTH_LONG).show();
                 }
                 return;
 
@@ -463,9 +482,7 @@ private void  checkCameraPermissions(){
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
        resultText = resultText.replaceAll("(\\r|\\n)", "");
-       new Summary().execute(resultText);
-       /*
-       //Implementing other analysis without hard code.
+       //new Summary().execute(resultText);
 
        switch (mode){
            case "HashTag Suggestion": new HashTagSuggestion().execute(resultText); System.out.println("LOOL");break;
@@ -473,7 +490,7 @@ private void  checkCameraPermissions(){
            case "Summary": new Summary().execute(resultText); break;
            case "Who/When/Where": new WhoWhenWhere().execute(resultText); break;
        }
-       */
+
         return resultText;
     }
 
