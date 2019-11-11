@@ -434,7 +434,10 @@ private void  checkCameraPermissions(){
                     public void onSuccess(FirebaseVisionDocumentText result) {
                         // Task completed successfully
                         fullText = pullText(result);
-
+                               if(fullText != null && !fullText.isEmpty()) { } else{
+                                   fullText = "No text was found in the image.";
+                                   summary = "No text was found in the image.";
+                               }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -482,17 +485,28 @@ private void  checkCameraPermissions(){
         double outputConfidence = Math.round(minConfidenceOfBlock * 1000.0) / 1000.0;
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
-       resultText = resultText.replaceAll("(\\r|\\n)", "");
-       //new Summary().execute(resultText);
+       resultText = resultText.replaceAll("(\\r|\\n)", " ");
 
-       switch (mode){
-           case "HashTag Suggestion": new HashTagSuggestion().execute(resultText); System.out.println("LOOL");break;
-           case "Sentiment": new Sentiment().execute(resultText); break;
-           case "Summary": new Summary().execute(resultText); break;
-           case "Who/When/Where": new WhoWhenWhere().execute(resultText); break;
+       // Only call below if string is not empty
+       if(resultText != null && !resultText.isEmpty()) {
+
+           switch (mode) {
+               case "HashTag Suggestion":
+                   new HashTagSuggestion().execute(resultText);
+                   System.out.println("LOOL");
+                   break;
+               case "Sentiment":
+                   new Sentiment().execute(resultText);
+                   break;
+               case "Summary":
+                   new Summary().execute(resultText);
+                   break;
+               case "Who/When/Where":
+                   new WhoWhenWhere().execute(resultText);
+                   break;
+           }
        }
-
-        return resultText;
+       return resultText;
     }
 
     private FirebaseVisionDocumentTextRecognizer getCloudDocumentRecognizer() {
