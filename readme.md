@@ -1,3 +1,4 @@
+# Won Best Automation Hack at HackKState19
 # SimplySnap
 
 ##### Created by Tommy Bracciata, Danny Tran, and Emma Hubka
