@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private Menu menu;
     private Camera mCamera;
     private CameraPreview mPreview;
-    public static int percentage=20;
+    public static int percentage = 20;
     public static String mode = "Summary";
 
     @Override
@@ -73,27 +73,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         loadCamera();
 
 
-
     }
-    private void pickFromGallery(){
+
+    private void pickFromGallery() {
         //Create an Intent with action as ACTION_PICK
-        Intent intent=new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK);
         // Sets the type as image/*. This ensures only components of type image are selected
         intent.setType("image/*");
         //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
         String[] mimeTypes = {"image/jpeg", "image/png"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         // Launching the Intent
-        startActivityForResult(intent,GALLERY_REQUEST_CODE);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
-    public void onActivityResult(int requestCode,int resultCode,Intent data){
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Result code is RESULT_OK only if the user selects an Image
         if (resultCode == Activity.RESULT_OK)
-            switch (requestCode){
+            switch (requestCode) {
                 case GALLERY_REQUEST_CODE:
                     //data.getData return the content URI for the selected Image
                     Uri selectedImage = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     // Get the cursor
                     Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                     // Move to first row
@@ -110,23 +111,27 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        try{
-        if(this.findViewById(android.R.id.content).getRootView()==findViewById(R.id.rl_root_one).getRootView()) {
-            this.menu=menu;
-            getMenuInflater().inflate(R.menu.main_menu, menu);
-        }} catch(Exception e){}
+        try {
+            if (this.findViewById(android.R.id.content).getRootView() == findViewById(R.id.rl_root_one).getRootView()) {
+                this.menu = menu;
+                getMenuInflater().inflate(R.menu.main_menu, menu);
+            }
+        } catch (Exception e) {
+        }
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
                 // Open Settings
-openSettings();
-return true;
+                openSettings();
+                return true;
             case R.id.menu_upload:
 // Open Upload
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -145,14 +150,16 @@ return true;
                                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                 MY_PERMISSIONS_REQUEST_READ_EXT_STORAGE);
                     }
-                }else{
-                pickFromGallery();}
+                } else {
+                    pickFromGallery();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    private  void openSettings() {
+
+    private void openSettings() {
         setContentView(R.layout.activity_settings);
         Button confirmButton = findViewById(R.id.button_confirm_percent);
         confirmButton.setOnClickListener(
@@ -177,7 +184,7 @@ return true;
                 if (!msupplier.isEmpty() || msupplier == "") {
                     MainActivity.mode = msupplier;
                 }
-                Log.e("Selected item : ",msupplier);
+                Log.e("Selected item : ", msupplier);
             }
 
             @Override
@@ -199,28 +206,29 @@ return true;
     }
 
 
-private void validatePercentage(){
-    EditText percent = findViewById(R.id.actual_percentage);
-    int percentageValue;
-    try {
-        if(percent.getText().toString() == null  || percent.getText().toString().isEmpty())       {
-            percent.setText(20);
+    private void validatePercentage() {
+        EditText percent = findViewById(R.id.actual_percentage);
+        int percentageValue;
+        try {
+            if (percent.getText().toString() == null || percent.getText().toString().isEmpty()) {
+                percent.setText("20");
+            }
+
+            percentageValue = Integer.parseInt(percent.getText().toString());
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), ("Please enter a valid number."),
+                    Toast.LENGTH_LONG).show();
+            return;
         }
+        if (percentageValue < 0 || percentageValue > 100) {
+            Toast.makeText(getApplicationContext(), ("It has to be between zero and one hundred you goober."),
 
-         percentageValue = Integer.parseInt(percent.getText().toString());
-
-    }              catch(Exception e){
-                    Toast.makeText(getApplicationContext(), ("Please enter a valid number."),
-                            Toast.LENGTH_LONG).show();
-                    return;
-    }
-    if(percentageValue<0|| percentageValue>100){
-                                      Toast.makeText(getApplicationContext(), ("It has to be between zero and one hundred you goober."),
-
-                                   Toast.LENGTH_LONG).show(); }else{
-                                               this.percentage=percentageValue;
-                                               loadCamera();
-    }
+                    Toast.LENGTH_LONG).show();
+        } else {
+            this.percentage = percentageValue;
+            loadCamera();
+        }
     }
 
     @Override
@@ -241,7 +249,7 @@ private void validatePercentage(){
                 return;
 
             }
-            case MY_PERMISSIONS_REQUEST_CAMERA:{
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -251,13 +259,16 @@ private void validatePercentage(){
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(getApplicationContext(), ("NGL you kind of need that..."),
-                            Toast.LENGTH_LONG).show();                }
+                            Toast.LENGTH_LONG).show();
+                }
             }
 
             // other 'case' lines to check for other
             // permissions this app might request.
         }
-    }    @Override
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_full:
@@ -276,8 +287,10 @@ private void validatePercentage(){
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(fullText);
     }
-    static String summary  = "";
-    String fullText="";
+
+    static String summary = "";
+    String fullText = "";
+
     private void openSummary() {
         TextView outputText = findViewById(R.id.output_text);
         outputText.setText(summary);
@@ -291,7 +304,6 @@ private void validatePercentage(){
         }
         super.onDestroy();
     }
-
 
 
     // https://developer.android.com/guide/topics/media/camera
@@ -374,7 +386,7 @@ private void validatePercentage(){
 
     }
 
-    void setupCamera(){
+    void setupCamera() {
         mCamera = getCameraInstance();
 
         // Create our Preview view and set it as the content of our activity.
@@ -393,6 +405,7 @@ private void validatePercentage(){
                 }
         );
     }
+
     void loadCamera() {
         try {
             mCamera.release();
@@ -406,27 +419,29 @@ private void validatePercentage(){
         checkCameraPermissions();
 
     }
-private void  checkCameraPermissions(){
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED) {
-        // Permission is not granted
-        // Permission is not granted
-        // Should we show an explanation?
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.CAMERA)) {
-            // Show an explanation to the user *asynchronously* -- don't block
-            // this thread waiting for the user's response! After the user
-            // sees the explanation, try again to request the permission.
+
+    private void checkCameraPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+            }
         } else {
-            // No explanation needed; request the permission
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_CAMERA);
+            setupCamera();
         }
-    }else{
-        setupCamera();
-        }
-}
+    }
+
     // After selecting image call the following method.
     void processImage(Bitmap image) {
         FirebaseVisionDocumentTextRecognizer detector = getCloudDocumentRecognizer();
@@ -438,10 +453,11 @@ private void  checkCameraPermissions(){
                     public void onSuccess(FirebaseVisionDocumentText result) {
                         // Task completed successfully
                         fullText = pullText(result);
-                               if(fullText != null && !fullText.isEmpty()) { } else{
-                                   fullText = "No text was found in the image.";
-                                   summary = "No text was found in the image.";
-                               }
+                        if (fullText != null && !fullText.isEmpty()) {
+                        } else {
+                            fullText = "No text was found in the image.";
+                            summary = "No text was found in the image.";
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -452,7 +468,8 @@ private void  checkCameraPermissions(){
                     }
                 });
     }
-    public static void setSummary(String result){
+
+    public static void setSummary(String result) {
         summary = result;
     }
 
@@ -489,29 +506,29 @@ private void  checkCameraPermissions(){
         double outputConfidence = Math.round(minConfidenceOfBlock * 1000.0) / 1000.0;
         Toast.makeText(getApplicationContext(), ("Confidence: " + outputConfidence),
                 Toast.LENGTH_LONG).show();
-       resultText = resultText.replaceAll("(\\r|\\n)", " ");
+        resultText = resultText.replaceAll("(\\r|\\n)", " ");
 
-       // Only call below if string is not empty
-       // Determines the type of processing to do.
-       if(resultText != null && !resultText.isEmpty()) {
+        // Only call below if string is not empty
+        // Determines the type of processing to do.
+        if (resultText != null && !resultText.isEmpty()) {
 
-           switch (mode) {
-               case "HashTag Suggestion":
-                   new HashTagSuggestion().execute(resultText);
-                   System.out.println("LOOL");
-                   break;
-               case "Sentiment":
-                   new Sentiment().execute(resultText);
-                   break;
-               case "Summary":
-                   new Summary().execute(resultText);
-                   break;
-               case "Who/When/Where":
-                   new WhoWhenWhere().execute(resultText);
-                   break;
-           }
-       }
-       return resultText;
+            switch (mode) {
+                case "HashTag Suggestion":
+                    new HashTagSuggestion().execute(resultText);
+                    System.out.println("LOOL");
+                    break;
+                case "Sentiment":
+                    new Sentiment().execute(resultText);
+                    break;
+                case "Summary":
+                    new Summary().execute(resultText);
+                    break;
+                case "Who/When/Where":
+                    new WhoWhenWhere().execute(resultText);
+                    break;
+            }
+        }
+        return resultText;
     }
 
     private FirebaseVisionDocumentTextRecognizer getCloudDocumentRecognizer() {
