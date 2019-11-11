@@ -165,7 +165,7 @@ return true;
 
         );
         final Spinner dropdown = findViewById(R.id.analysis_type);
-        String[] items = new String[]{"HashTag Suggestion", "Sentiment", "Summary", "Who/When/Where"};
+        String[] items = new String[]{"Summary (Default)", "HashTag Suggestion", "Sentiment", "Who/When/Where"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -173,7 +173,7 @@ return true;
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-                String msupplier=dropdown.getSelectedItem().toString();
+                String msupplier = dropdown.getSelectedItem().toString();
                 if (!msupplier.isEmpty() || msupplier == "") {
                     MainActivity.mode = msupplier;
                 }
@@ -203,6 +203,10 @@ private void validatePercentage(){
     EditText percent = findViewById(R.id.actual_percentage);
     int percentageValue;
     try {
+        if(percent.getText().toString() == null  || percent.getText().toString().isEmpty())       {
+            percent.setText(20);
+        }
+
          percentageValue = Integer.parseInt(percent.getText().toString());
 
     }              catch(Exception e){
@@ -488,6 +492,7 @@ private void  checkCameraPermissions(){
        resultText = resultText.replaceAll("(\\r|\\n)", " ");
 
        // Only call below if string is not empty
+       // Determines the type of processing to do.
        if(resultText != null && !resultText.isEmpty()) {
 
            switch (mode) {
